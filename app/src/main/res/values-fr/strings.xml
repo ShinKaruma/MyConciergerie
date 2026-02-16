@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_password">Mot de passe</string>
+    <string name="action_sign_in">Se connecter</string>
+    <string name="welcome">Bienvenue</string>
+    <string name="invalid_username">Nom d\'utilisateur invalide</string>
+    <string name="next">Suivant</string>
+    <string name="previous">Precedent</string>
+    <string name="login_failed">Erreur lors de la connexion</string>
+    <string name="lbl_owner">Propriétaire</string>
+    <string name="name">Nom</string>
+    <string name="surname">Prenom</string>
+    <string name="phone">Telephone</string>
+    <string name="code_synchro">Code Conciergerie</string>
+    <string name="color">Appuyez pour choisir une couleur</string>
+    <string name="color_choice">Choisir une couleur</string>
+    <string name="ok">Valider</string>
+    <string name="cancel">Annuler</string>
+    <string name="register">Inscription</string>
+    <string name="new_conciergerie">Nouvelle Conciergerie</string>
+    <string name="error_empty_fields">Tous les champs doivent etre remplis</string>
+    <string name="error_api_access">Une erreur est arrivee, veuillez contacter le support</string>
+    <string name="auth_success">Authentification reussie</string>
+    <string name="register_success">Le compte a bien ete cree, veuillez vous connecter</string>
+    <string name="error_account_creation">L\'email existe deja</string>
+    <string name="auth_title">Authentification</string>
+    <string name="add_appartement">Ajouter un Appartement</string>
+    <string name="add_rental">Ajouter une Location</string>
+    <string name="logout">Se deconnecter</string>
+    <string name="logout_success">Deconnexion reussie</string>
+    <string name="address">Adresse</string>
+    <string name="number">Numero</string>
+    <string name="key_code">Code Clef</string>
+    <string name="door_code">Code Porte</string>
+    <string name="add">Ajouter</string>
+    <string name="add_success">Creation reussie</string>
+    <string name="home_calendar">Calendrier</string>
+    <string name="home_rentals">Locations</string>
+    <string name="home_apartments">Appartements</string>
+</resources>

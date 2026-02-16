@@ -1,0 +1,56 @@
+package com.ShinKaruma.conciergerie.network;
+
+
+import com.ShinKaruma.conciergerie.adders.AppartementCreateDTO;
+import com.ShinKaruma.conciergerie.pojo.Appartement;
+import com.ShinKaruma.conciergerie.pojo.Concierge;
+import com.ShinKaruma.conciergerie.pojo.Proprietaire;
+import com.ShinKaruma.conciergerie.pojo.User;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
+
+
+public interface APIInterface {
+
+    @GET("me")
+    Call<User> getMe();
+
+    @GET("proprietaires")
+    Call<List<Proprietaire>> getProprietaires(
+    );
+
+    @GET("proprietaires")
+    Call<List<Proprietaire>> getProprietairesByUserId(
+            @Query("user") int idUser
+    );
+
+    @GET("concierges")
+    Call<List<Concierge>> getConcierges(
+    );
+
+    @GET("concierge")
+    Call<List<Concierge>> getConciergeByUserId(
+            @Query("user") int idUser
+    );
+
+    @POST("appartements")
+    Call<Void> createAppartement(
+        @Body AppartementCreateDTO appartement
+    );
+
+    @GET("appartements")
+    Call<List<Appartement>> getAppartements(
+    );
+
+
+
+
+
+
+}
