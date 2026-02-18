@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import com.ShinKaruma.conciergerie.cardAdapters.AppartementAdapter;
+import com.ShinKaruma.conciergerie.details.AppartementDetailFragment;
 import com.ShinKaruma.conciergerie.network.APIClient;
 import com.ShinKaruma.conciergerie.network.APIInterface;
 import com.ShinKaruma.conciergerie.pojo.Appartement;
@@ -54,7 +56,21 @@ public class AppartementsFragment extends Fragment {
                             List<Appartement> appartements = response.body();
 
                             AppartementAdapter adapter = new AppartementAdapter(appartements, appartement -> {
-                                // navigation vers détail
+
+                                AppartementDetailFragment fragment = new AppartementDetailFragment();
+
+                               Bundle bundle = new Bundle();
+                               bundle.putInt("idAppartement", appartement.getId());
+                               fragment.setArguments(bundle);
+
+                               requireActivity()
+                                .getSupportFragmentManager()
+                                       .beginTransaction()
+                                       .replace(R.id.mainContainer, fragment)
+                                       .addToBackStack(null)
+                                       .commit();
+
+
                             });
 
                             recyclerView.setAdapter(adapter);

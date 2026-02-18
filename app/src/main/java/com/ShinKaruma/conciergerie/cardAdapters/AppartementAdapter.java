@@ -1,4 +1,4 @@
-package com.ShinKaruma.conciergerie;
+package com.ShinKaruma.conciergerie.cardAdapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ShinKaruma.conciergerie.R;
 import com.ShinKaruma.conciergerie.pojo.Appartement;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
 
 
 
-        if (appart.isEstOccupe()) {
+        if (appart.isOccupe()) {
             holder.status.setText("🔴 En location");
         } else {
             holder.status.setText("🟢 Libre");

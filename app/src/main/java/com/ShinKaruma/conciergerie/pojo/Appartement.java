@@ -1,6 +1,9 @@
 package com.ShinKaruma.conciergerie.pojo;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Appartement {
     @SerializedName("id")
     private int id = 0;
@@ -11,9 +14,13 @@ public class Appartement {
     private String codeCle;
     private String codePorte;
     private int nbKitsDispo = 0;
+    @SerializedName("occupe")
     private boolean status;
+    private List<Location> locations;
+    private Location locationActive;
 
-    public Appartement(int id, Proprietaire proprietaire, String nom, String lieu, String numero, String codeCle, String codePorte, int nbKitsDispo, boolean status) {
+
+    public Appartement(int id, Proprietaire proprietaire, String nom, String lieu, String numero, String codeCle, String codePorte, int nbKitsDispo, boolean status, List<Location> locations, Location locationActive) {
         this.id = id;
         this.proprietaire = proprietaire;
         this.nom = nom;
@@ -23,6 +30,8 @@ public class Appartement {
         this.codePorte = codePorte;
         this.nbKitsDispo = nbKitsDispo;
         this.status = status;
+        this.locations = locations;
+        this.locationActive = locationActive;
     }
 
     public int getId() {
@@ -89,7 +98,23 @@ public class Appartement {
         this.nbKitsDispo = nbKitsDispo;
     }
 
-    public boolean isEstOccupe() {
+    public boolean isOccupe() {
         return status;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public Location getLocationActive() {
+        return locationActive;
+    }
+
+    public void setLocationActive(Location locationActive) {
+        this.locationActive = locationActive;
     }
 }

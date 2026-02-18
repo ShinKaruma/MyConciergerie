@@ -37,4 +37,8 @@
     <string name="home_calendar">Calendrier</string>
     <string name="home_rentals">Locations</string>
     <string name="home_apartments">Appartements</string>
+    <string name="no_locataire_name">Pas de nom de locataire indique</string>
+    <string name="location_status_active">Actif</string>
+    <string name="location_status_past">Terminee</string>
+    <string name="location_status_future">A venir</string>
 </resources>

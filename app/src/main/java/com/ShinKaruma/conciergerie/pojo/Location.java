@@ -1,5 +1,7 @@
 package com.ShinKaruma.conciergerie.pojo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 import java.util.List;
 
@@ -7,17 +9,21 @@ public class Location {
     private int id;
     private Date dateDebut;
     private Date dateFin;
-    private int appartementId;
-    private int locataireId;
+    private Appartement appartement;
+    private Locataire locataire;
     private List<LocationService> services;
+    @SerializedName("active")
+    private boolean isActive;
 
-    public Location(int id, Date dateDebut, Date dateFin, int appartementId, int locataireId, List<LocationService> services) {
+
+    public Location(int id, Date dateDebut, Date dateFin, Appartement appartement, Locataire locataire, List<LocationService> services, boolean isActive) {
         this.id = id;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-        this.appartementId = appartementId;
-        this.locataireId = locataireId;
+        this.appartement = appartement;
+        this.locataire = locataire;
         this.services = services;
+        this.isActive = isActive;
     }
 
     public int getId() {
@@ -44,20 +50,20 @@ public class Location {
         this.dateFin = dateFin;
     }
 
-    public int getAppartementId() {
-        return appartementId;
+    public Locataire getLocataire() {
+        return locataire;
     }
 
-    public void setAppartementId(int appartementId) {
-        this.appartementId = appartementId;
+    public void setLocataire(Locataire locataire) {
+        this.locataire = locataire;
     }
 
-    public int getLocataireId() {
-        return locataireId;
+    public Appartement getAppartement() {
+        return appartement;
     }
 
-    public void setLocataireId(int locataireId) {
-        this.locataireId = locataireId;
+    public void setAppartement(Appartement appartement) {
+        this.appartement = appartement;
     }
 
     public List<LocationService> getServices() {
@@ -67,4 +73,9 @@ public class Location {
     public void setServices(List<LocationService> services) {
         this.services = services;
     }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
 }

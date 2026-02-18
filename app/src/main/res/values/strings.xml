@@ -83,4 +83,8 @@
     <string name="home_calendar">Calendar</string>
     <string name="home_rentals">Rentals</string>
     <string name="home_apartments">Apartments</string>
+    <string name="no_locataire_name">No renter name given</string>
+    <string name="location_status_active">Active</string>
+    <string name="location_status_past">Ended</string>
+    <string name="location_status_future">Coming</string>
 </resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/cardLocation"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:clickable="false"
+    android:focusable="false"
+    android:padding="12dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvLocataire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nom locataire"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tvDates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01/02/2026 - 05/02/2026"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tvStatut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Actif"
+            android:textSize="14sp"
+            android:textColor="@color/purple_700"/>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

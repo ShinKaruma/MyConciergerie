@@ -31,6 +31,11 @@ public class Proprietaire{
         this.proprietaireId = proprietaireId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+
     @Override
     public String toString(){
         return user.getNom() + " " + user.getPrenom();
