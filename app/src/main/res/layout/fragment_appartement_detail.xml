@@ -1,106 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollDetailAppartement"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@android:color/system_background_dark"
-    tools:context=".details.AppartementDetailFragment">
+    android:transitionName="cardFocus">
 
-    <LinearLayout
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/detailToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="Détail appartement" />
 
-        <!-- Carte Appartement -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardAppartement"
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailToolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
             android:padding="16dp"
-            android:clickable="false">
+            >
 
-            <LinearLayout
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginBottom="16dp"
+                android:background="#DDDDDD" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="#DDDDDD" />
+
+        </LinearLayout>
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <ScrollView
+        android:id="@+id/scrollDetailAppartement"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailToolbar"
+        tools:context=".details.AppartementDetailFragment"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Carte Appartement -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardAppartement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:clickable="false"
+                android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/tvNomAppartement"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nom Appartement"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvAdresseAppartement"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Adresse complète"
-                    android:layout_marginTop="4dp" />
+                    <TextView
+                        android:id="@+id/tvNomAppartement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nom Appartement"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvProprietaire"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Propriétaire"
-                    android:layout_marginTop="4dp" />
+                    <TextView
+                        android:id="@+id/tvAdresseAppartement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Adresse complète" />
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/tvProprietaire"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Propriétaire" />
 
-        <!-- Carte Location Active -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardLocationActive"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:padding="16dp"
-            android:visibility="gone">
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-            <LinearLayout
+            <!-- Carte Location Active -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardLocationActive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:padding="16dp"
+                android:visibility="gone">
 
-                <TextView
-                    android:id="@+id/tvLocataire"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Locataire"
-                    android:textStyle="bold" />
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvDatesLocation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Du xx/xx/xxxx au xx/xx/xxxx"
-                    android:layout_marginTop="2dp" />
+                    <TextView
+                        android:id="@+id/tvLocataire"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Locataire"
+                        android:textStyle="bold" />
 
-                 />
+                    <TextView
+                        android:id="@+id/tvDatesLocation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Du xx/xx/xxxx au xx/xx/xxxx" />
 
-            </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
+                    />
 
-        <!-- Liste chronologique des locations -->
-        <TextView
-            android:id="@+id/tvTitleHistorique"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Historique des locations"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerLocations"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            tools:listitem="@layout/item_location" />
+            <!-- Liste chronologique des locations -->
+            <TextView
+                android:id="@+id/tvTitleHistorique"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Historique des locations"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-    </LinearLayout>
-</ScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerLocations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_location" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

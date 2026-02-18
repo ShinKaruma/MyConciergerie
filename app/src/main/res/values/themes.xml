@@ -12,6 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
     <!-- Base application theme. -->
     <style name="Base.Theme.MyConciergerie" parent="Theme.Material3.DayNight.NoActionBar">

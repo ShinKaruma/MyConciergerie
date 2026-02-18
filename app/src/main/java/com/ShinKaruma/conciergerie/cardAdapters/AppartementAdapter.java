@@ -5,10 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ShinKaruma.conciergerie.R;
 import com.ShinKaruma.conciergerie.pojo.Appartement;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onItemClick(Appartement appartement);
+        void onItemClick(Appartement appartement, View sharedView);
     }
 
     public AppartementAdapter(List<Appartement> appartements, OnItemClickListener listener) {
@@ -36,6 +38,9 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         Appartement appart = appartements.get(position);
 
+        String transitionName = "appartement_card_" + appart.getId();
+        ViewCompat.setTransitionName(holder.card, transitionName);
+
         holder.nom.setText(appart.getNom());
         holder.lieu.setText(appart.getLieu());
         holder.nomProprio.setText(appart.getProprietaire().toString());
@@ -48,7 +53,7 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
             holder.status.setText("🟢 Libre");
         }
 
-        holder.itemView.setOnClickListener(v -> listener.onItemClick(appart));
+        holder.itemView.setOnClickListener(v -> listener.onItemClick(appart, holder.card));
     }
 
     @Override
@@ -58,9 +63,12 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nom, lieu, status, nomProprio;
+        MaterialCardView card;
+
 
         ViewHolder(View itemView) {
             super(itemView);
+            card = itemView.findViewById(R.id.cardAppartement);
             nom = itemView.findViewById(R.id.tvNom);
             nomProprio = itemView.findViewById(R.id.tvNomProprio);
             lieu = itemView.findViewById(R.id.tvAdresse);

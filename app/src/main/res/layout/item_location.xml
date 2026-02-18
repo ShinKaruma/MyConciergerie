@@ -34,6 +34,6 @@
             android:layout_height="wrap_content"
             android:text="Actif"
             android:textSize="14sp"
-            android:textColor="@color/purple_700"/>
+            android:textColor="?attr/colorAccent"/>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

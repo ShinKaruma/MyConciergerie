@@ -48,6 +48,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("com.google.android.material:material:1.0.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.annotation)

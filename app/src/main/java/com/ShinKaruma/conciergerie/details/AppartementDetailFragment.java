@@ -10,9 +10,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.ChangeBounds;
 
 import com.ShinKaruma.conciergerie.R;
 import com.ShinKaruma.conciergerie.cardAdapters.LocationAdapter;
@@ -20,6 +22,8 @@ import com.ShinKaruma.conciergerie.network.APIClient;
 import com.ShinKaruma.conciergerie.network.APIInterface;
 import com.ShinKaruma.conciergerie.pojo.Appartement;
 import com.ShinKaruma.conciergerie.pojo.Location;
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.List;
@@ -31,7 +35,8 @@ import retrofit2.Response;
 public class AppartementDetailFragment extends Fragment {
 
     private int appartementId;
-
+    private ShimmerFrameLayout shimmerLayout;
+    private View contentLayout;
     private TextView tvNomAppartement, tvAdresseAppartement, tvProprietaire;
     private MaterialCardView cardLocationActive;
     private TextView tvLocataire, tvDatesLocation, tvStatutLocation;
@@ -47,6 +52,18 @@ public class AppartementDetailFragment extends Fragment {
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ChangeBounds changeBounds = new ChangeBounds();
+        changeBounds.setDuration(300);
+
+        setSharedElementEnterTransition(changeBounds);
+        setSharedElementReturnTransition(changeBounds);
+
+    }
+
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_appartement_detail, container, false);
@@ -55,6 +72,21 @@ public class AppartementDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        MaterialToolbar toolbar = view.findViewById(R.id.detailToolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(v ->
+                requireActivity().getSupportFragmentManager().popBackStack()
+        );
+
+        shimmerLayout = view.findViewById(R.id.shimmerLayout);
+        contentLayout = view.findViewById(R.id.scrollDetailAppartement);
+
+        shimmerLayout.startShimmer();
+
+
+
 
         // --- Lier les vues ---
         tvNomAppartement = view.findViewById(R.id.tvNomAppartement);
@@ -73,6 +105,7 @@ public class AppartementDetailFragment extends Fragment {
             Log.e("AppartementDetailFragment", "je check ici"+getArguments().getInt("idAppartement_id", -1));
             appartementId = getArguments().getInt("idAppartement", -1);
             if (appartementId != -1) {
+                toolbar.setTitle("Appartement #" + appartementId);
                 loadAppartementDetails(appartementId);
             }
         }
@@ -85,6 +118,11 @@ public class AppartementDetailFragment extends Fragment {
             @Override
             public void onResponse(Call<Appartement> call, Response<Appartement> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    shimmerLayout.stopShimmer();
+                    shimmerLayout.setVisibility(View.GONE);
+
+                    contentLayout.setVisibility(View.VISIBLE);
+
                     Appartement appartement = response.body();
 
                     // --- Remplir infos appartement ---

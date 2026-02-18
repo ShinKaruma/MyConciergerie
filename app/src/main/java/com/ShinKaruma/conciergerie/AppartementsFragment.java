@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,12 +21,16 @@ import com.ShinKaruma.conciergerie.details.AppartementDetailFragment;
 import com.ShinKaruma.conciergerie.network.APIClient;
 import com.ShinKaruma.conciergerie.network.APIInterface;
 import com.ShinKaruma.conciergerie.pojo.Appartement;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AppartementsFragment extends Fragment {
+
+    private ShimmerFrameLayout shimmerLayout;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -41,7 +46,12 @@ public class AppartementsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerAppartements);
+        shimmerLayout = view.findViewById(R.id.shimmerLayout);
+
+        shimmerLayout.startShimmer();
+
+
+        recyclerView = view.findViewById(R.id.recyclerAppartements);
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
@@ -53,22 +63,31 @@ public class AppartementsFragment extends Fragment {
                     @Override
                     public void onResponse(Call<List<Appartement>> call, Response<List<Appartement>> response) {
                         if (response.isSuccessful()) {
+                            shimmerLayout.stopShimmer();
+                            shimmerLayout.setVisibility(View.GONE);
+
+                            recyclerView.setVisibility(View.VISIBLE);
+
                             List<Appartement> appartements = response.body();
 
-                            AppartementAdapter adapter = new AppartementAdapter(appartements, appartement -> {
+                            AppartementAdapter adapter = new AppartementAdapter(appartements, (appartement, sharedView) -> {
 
                                 AppartementDetailFragment fragment = new AppartementDetailFragment();
+                                String transitionName = "appartement_card_" + appartement.getId();
+                                ViewCompat.setTransitionName(requireView(), transitionName);
 
                                Bundle bundle = new Bundle();
                                bundle.putInt("idAppartement", appartement.getId());
                                fragment.setArguments(bundle);
 
-                               requireActivity()
-                                .getSupportFragmentManager()
-                                       .beginTransaction()
-                                       .replace(R.id.mainContainer, fragment)
-                                       .addToBackStack(null)
-                                       .commit();
+                                requireActivity()
+                                        .getSupportFragmentManager()
+                                        .beginTransaction()
+                                        .setReorderingAllowed(true)
+                                        .addSharedElement(sharedView, ViewCompat.getTransitionName(sharedView))
+                                        .replace(R.id.mainContainer, fragment)
+                                        .addToBackStack(null)
+                                        .commit();
 
 
                             });
