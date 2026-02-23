@@ -73,8 +73,6 @@ public class AppartementsFragment extends Fragment {
                             AppartementAdapter adapter = new AppartementAdapter(appartements, (appartement, sharedView) -> {
 
                                 AppartementDetailFragment fragment = new AppartementDetailFragment();
-                                String transitionName = "appartement_card_" + appartement.getId();
-                                ViewCompat.setTransitionName(requireView(), transitionName);
 
                                Bundle bundle = new Bundle();
                                bundle.putInt("idAppartement", appartement.getId());
@@ -84,7 +82,12 @@ public class AppartementsFragment extends Fragment {
                                         .getSupportFragmentManager()
                                         .beginTransaction()
                                         .setReorderingAllowed(true)
-                                        .addSharedElement(sharedView, ViewCompat.getTransitionName(sharedView))
+                                        .setCustomAnimations(
+                                                R.anim.slide_in_right,
+                                                R.anim.slide_out_left,
+                                                R.anim.slide_in_left,
+                                                R.anim.slide_out_right
+                                        )
                                         .replace(R.id.mainContainer, fragment)
                                         .addToBackStack(null)
                                         .commit();

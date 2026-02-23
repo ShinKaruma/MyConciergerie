@@ -41,4 +41,7 @@
     <string name="location_status_active">Actif</string>
     <string name="location_status_past">Terminee</string>
     <string name="location_status_future">A venir</string>
+    <string name="appartement_status_free">🟢 Libre</string>
+    <string name="appartement_status_rented">🔴 En location</string>
+    <string name="kit_count">"Nombre de kits disponibles : "</string>
 </resources>

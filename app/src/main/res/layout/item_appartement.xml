@@ -7,7 +7,6 @@
     android:layout_margin="8dp"
     android:clickable="true"
     android:focusable="true"
-    android:transitionName="cardFocus"
     >
 
     <LinearLayout
@@ -38,6 +37,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12 rue Victor Hugo, Paris"/>
+
+        <TextView
+            android:id="@+id/tvKits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
 
         <TextView
             android:id="@+id/tvStatut"

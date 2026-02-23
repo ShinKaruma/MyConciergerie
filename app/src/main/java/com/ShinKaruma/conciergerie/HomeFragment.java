@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
                             tab.setText(getString(R.string.home_calendar));
                             break;
                         case 1:
-                            tab.setText(getString(R.string.home_rentals));
+                            tab.setText(getString(R.string.planning));
                             break;
                         case 2:
                             tab.setText(getString(R.string.home_apartments));

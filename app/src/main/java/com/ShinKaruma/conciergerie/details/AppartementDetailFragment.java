@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,13 +55,6 @@ public class AppartementDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        ChangeBounds changeBounds = new ChangeBounds();
-        changeBounds.setDuration(300);
-
-        setSharedElementEnterTransition(changeBounds);
-        setSharedElementReturnTransition(changeBounds);
-
     }
 
     @Override
@@ -102,8 +96,8 @@ public class AppartementDetailFragment extends Fragment {
 
         // --- Récupérer l'id depuis les arguments ---
         if (getArguments() != null) {
-            Log.e("AppartementDetailFragment", "je check ici"+getArguments().getInt("idAppartement_id", -1));
             appartementId = getArguments().getInt("idAppartement", -1);
+
             if (appartementId != -1) {
                 toolbar.setTitle("Appartement #" + appartementId);
                 loadAppartementDetails(appartementId);
@@ -127,23 +121,21 @@ public class AppartementDetailFragment extends Fragment {
 
                     // --- Remplir infos appartement ---
                     tvNomAppartement.setText(appartement.getNom());
-                    tvAdresseAppartement.setText(appartement.getLieu() + " n°" + appartement.getNumero());
-                    tvProprietaire.setText(appartement.getProprietaire().getUser().getPrenom()
-                            + " " + appartement.getProprietaire().getUser().getNom());
+                    tvAdresseAppartement.setText(appartement.getAdresse());
+                    tvProprietaire.setText(appartement.getProprietaire().toString());
 
                     // --- Location active ---
                     Location locationActive = appartement.getLocationActive(); // suppose que tu as isActive() ou getLocationActive()
                     if (locationActive != null) {
                         cardLocationActive.setVisibility(View.VISIBLE);
                         if (locationActive.getLocataire() != null) {
-                            tvLocataire.setText(locationActive.getLocataire().getPrenom() + " "
-                                    + locationActive.getLocataire().getNom());
+                            tvLocataire.setText(locationActive.getLocataire().toString());
                         }else{
                             tvLocataire.setText(getString(
                                     R.string.no_locataire_name
                             ));
                         }
-                        tvDatesLocation.setText(locationActive.getDateDebut() + " - " + locationActive.getDateFin());
+                        tvDatesLocation.setText(locationActive.getDateDebutString() + " - " + locationActive.getDateFinString());
                     } else {
                         cardLocationActive.setVisibility(View.GONE);
                     }

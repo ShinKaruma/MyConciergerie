@@ -13,6 +13,7 @@ public class Appartement {
     private String numero;
     private String codeCle;
     private String codePorte;
+    @SerializedName("nbKitDispo")
     private int nbKitsDispo = 0;
     @SerializedName("occupe")
     private boolean status;
@@ -72,6 +73,10 @@ public class Appartement {
 
     public void setNumero(String numero) {
         this.numero = numero;
+    }
+
+    public String getAdresse() {
+        return numero + " " + lieu;
     }
 
     public String getCodeCle() {

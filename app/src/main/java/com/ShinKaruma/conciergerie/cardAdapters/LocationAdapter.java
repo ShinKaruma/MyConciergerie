@@ -2,6 +2,7 @@ package com.ShinKaruma.conciergerie.cardAdapters;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
             holder.tvLocataire.setText(context.getString(R.string.no_locataire_name));
         }
+        Log.e("LocationAdapter", "Date début: " + location.getDateDebut());
+        Log.e("LocationAdapter", "Date fin: " + location.getDateFin());
 
-        holder.tvDates.setText(location.getDateDebut() + " - " + location.getDateFin());
+
+        holder.tvDates.setText(location.getDateDebutString() + " - " + location.getDateFinString());
 
 
         Date now = new Date();

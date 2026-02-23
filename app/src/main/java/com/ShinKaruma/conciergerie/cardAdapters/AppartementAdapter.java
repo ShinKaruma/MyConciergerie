@@ -1,11 +1,12 @@
 package com.ShinKaruma.conciergerie.cardAdapters;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ShinKaruma.conciergerie.R;
@@ -38,19 +39,21 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         Appartement appart = appartements.get(position);
 
-        String transitionName = "appartement_card_" + appart.getId();
-        ViewCompat.setTransitionName(holder.card, transitionName);
 
         holder.nom.setText(appart.getNom());
-        holder.lieu.setText(appart.getLieu());
+        holder.lieu.setText(appart.getAdresse());
         holder.nomProprio.setText(appart.getProprietaire().toString());
+        String kits = holder.itemView.getContext().getString(R.string.kit_count) + appart.getNbKitsDispo() ;
+
+        holder.kits.setText(kits);
+
 
 
 
         if (appart.isOccupe()) {
-            holder.status.setText("🔴 En location");
+            holder.status.setText(R.string.appartement_status_rented);
         } else {
-            holder.status.setText("🟢 Libre");
+            holder.status.setText(R.string.appartement_status_free);
         }
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(appart, holder.card));
@@ -62,7 +65,7 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView nom, lieu, status, nomProprio;
+        TextView nom, lieu, status, nomProprio, kits;
         MaterialCardView card;
 
 
@@ -72,6 +75,7 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
             nom = itemView.findViewById(R.id.tvNom);
             nomProprio = itemView.findViewById(R.id.tvNomProprio);
             lieu = itemView.findViewById(R.id.tvAdresse);
+            kits = itemView.findViewById(R.id.tvKits);
             status = itemView.findViewById(R.id.tvStatut);
         }
     }

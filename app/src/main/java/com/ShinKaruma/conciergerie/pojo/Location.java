@@ -1,7 +1,10 @@
 package com.ShinKaruma.conciergerie.pojo;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -14,6 +17,7 @@ public class Location {
     private List<LocationService> services;
     @SerializedName("active")
     private boolean isActive;
+
 
 
     public Location(int id, Date dateDebut, Date dateFin, Appartement appartement, Locataire locataire, List<LocationService> services, boolean isActive) {
@@ -48,6 +52,15 @@ public class Location {
 
     public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
+    }
+    public String getDateDebutString() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return formatter.format(this.dateDebut);
+    }
+
+    public String getDateFinString() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return formatter.format(this.dateFin);
     }
 
     public Locataire getLocataire() {
