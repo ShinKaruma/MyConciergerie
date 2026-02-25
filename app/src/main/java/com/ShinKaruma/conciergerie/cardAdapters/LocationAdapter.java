@@ -40,14 +40,11 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
 
 
         if (location.getLocataire() != null) {
-            holder.tvLocataire.setText(location.getLocataire().getPrenom() + " "
-                    + location.getLocataire().getNom());
+            holder.tvLocataire.setText(location.getLocataire().toString());
         }else{
 
             holder.tvLocataire.setText(context.getString(R.string.no_locataire_name));
         }
-        Log.e("LocationAdapter", "Date début: " + location.getDateDebut());
-        Log.e("LocationAdapter", "Date fin: " + location.getDateFin());
 
 
         holder.tvDates.setText(location.getDateDebutString() + " - " + location.getDateFinString());
@@ -57,7 +54,7 @@ public class LocationAdapter extends RecyclerView.Adapter<LocationAdapter.Locati
         String statut;
         if (location.isActive()) {
             statut = context.getString(R.string.location_status_active);
-        } else if (now.after(location.getDateDebut())) { // futur
+        } else if (location.getDateDebut().after(now)) { // futur
             statut = context.getString(R.string.location_status_future);
         } else {
             statut = context.getString(R.string.location_status_past);

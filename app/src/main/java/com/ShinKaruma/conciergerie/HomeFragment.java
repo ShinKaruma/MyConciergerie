@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment {
 
         MainPagerAdapter adapter = new MainPagerAdapter(this);
         viewPager.setAdapter(adapter);
+        viewPager.setUserInputEnabled(false);
 
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {

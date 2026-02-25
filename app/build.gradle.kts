@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.ShinKaruma.conciergerie"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -47,8 +47,13 @@ dependencies {
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    implementation("com.google.android.material:material:1.0.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+    implementation("com.kizitonwose.calendar:view:2.6.0")
+    implementation(libs.places)
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.annotation)

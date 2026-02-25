@@ -3,6 +3,7 @@ package com.ShinKaruma.conciergerie.network;
 
 import com.ShinKaruma.conciergerie.adders.AppartementCreateDTO;
 import com.ShinKaruma.conciergerie.pojo.Appartement;
+import com.ShinKaruma.conciergerie.pojo.CalendarEvent;
 import com.ShinKaruma.conciergerie.pojo.Concierge;
 import com.ShinKaruma.conciergerie.pojo.PlanningDay;
 import com.ShinKaruma.conciergerie.pojo.Proprietaire;
@@ -57,6 +58,12 @@ public interface APIInterface {
 
     @GET("planning")
     Call<List<PlanningDay>> getPlanning();
+
+    @GET("calendar")
+    Call<List<CalendarEvent>> getCalendar(
+            @Query("from") String from,
+            @Query("to") String to
+            );
 
 
 

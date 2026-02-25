@@ -52,8 +52,10 @@ public class AppartementAdapter extends RecyclerView.Adapter<AppartementAdapter.
 
         if (appart.isOccupe()) {
             holder.status.setText(R.string.appartement_status_rented);
+            holder.status.setTextColor(holder.itemView.getContext().getColor(R.color.appartBusy));
         } else {
             holder.status.setText(R.string.appartement_status_free);
+            holder.status.setTextColor(holder.itemView.getContext().getColor(R.color.appartFree));
         }
 
         holder.itemView.setOnClickListener(v -> listener.onItemClick(appart, holder.card));

@@ -1,64 +1,203 @@
 package com.ShinKaruma.conciergerie;
 
+import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CalendarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.ShinKaruma.conciergerie.cardAdapters.DayEventAdapter;
+import com.ShinKaruma.conciergerie.network.APIClient;
+import com.ShinKaruma.conciergerie.network.APIInterface;
+import com.ShinKaruma.conciergerie.pojo.CalendarEvent;
+import com.kizitonwose.calendar.core.CalendarDay;
+import com.kizitonwose.calendar.view.CalendarView;
+import com.kizitonwose.calendar.view.MonthDayBinder;
+import com.kizitonwose.calendar.view.ViewContainer;
+
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CalendarFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private CalendarView calendarView;
+    private RecyclerView recyclerDayEvents;
+    private TextView tvDayEventsTitle;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private final HashMap<LocalDate, List<CalendarEvent>> eventsByDate = new HashMap<>();
+    private final List<CalendarEvent> selectedDayEvents = new ArrayList<>();
+    private DayEventAdapter dayEventAdapter;
 
-    public CalendarFragment() {
-        // Required empty public constructor
-    }
+    private LocalDate selectedDate;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CalendarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CalendarFragment newInstance(String param1, String param2) {
-        CalendarFragment fragment = new CalendarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    private final DateTimeFormatter apiFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_calendar, container, false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        calendarView = view.findViewById(R.id.calendarView);
+
+        View root = view; // racine du fragment
+
+        root.setOnTouchListener((v, event) -> {
+            v.getParent().requestDisallowInterceptTouchEvent(true);
+            return false;
+        });
+
+        recyclerDayEvents = view.findViewById(R.id.recyclerDayEvents);
+        tvDayEventsTitle = view.findViewById(R.id.tvDayEventsTitle);
+
+        recyclerDayEvents.setLayoutManager(new LinearLayoutManager(getContext()));
+        dayEventAdapter = new DayEventAdapter(selectedDayEvents);
+        recyclerDayEvents.setAdapter(dayEventAdapter);
+
+        fetchEvents();
+    }
+
+    private void fetchEvents() {
+        APIInterface api = APIClient.createApi(getContext());
+        api.getCalendar(
+                LocalDate.now().format(apiFormatter),
+                LocalDate.now().plus(3, ChronoUnit.MONTHS).format(apiFormatter)
+        ).enqueue(new Callback<List<CalendarEvent>>() {
+            @Override
+            public void onResponse(Call<List<CalendarEvent>> call, Response<List<CalendarEvent>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (CalendarEvent event : response.body()) {
+
+                        LocalDate start = LocalDate.parse(event.start);
+                        LocalDate end = LocalDate.parse(event.end);
+
+
+                        LocalDate date = start;
+                        while (!date.isAfter(end)) {
+                            eventsByDate.computeIfAbsent(date, k -> new ArrayList<>()).add(event);
+                            date = date.plusDays(1);
+                        }
+                    }
+
+                    setupCalendar();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CalendarEvent>> call, Throwable t) {
+                Log.e("CalendarFragment", "Erreur lors de la récupération des événements", t);
+            }
+        });
+    }
+
+    private void setupCalendar() {
+        LocalDate currentMonth = LocalDate.now().withDayOfMonth(1);
+        YearMonth firstMonth = YearMonth.from(currentMonth.minusMonths(3));
+        YearMonth lastMonth = YearMonth.from(currentMonth.plusMonths(3));
+
+        calendarView.setup(firstMonth, lastMonth, java.time.DayOfWeek.MONDAY);
+
+        calendarView.scrollToMonth(YearMonth.from(currentMonth));
+
+        calendarView.setDayBinder(new MonthDayBinder<DayViewContainer>() {
+            @Override
+            public void bind(@NonNull DayViewContainer container, CalendarDay calendarDay) {
+                container.bind(calendarDay);
+            }
+
+            @Override
+            public DayViewContainer create(@NonNull View view) {
+                return new DayViewContainer(view);
+            }
+        });
+
+        // Sélection par défaut sur aujourd'hui
+        selectDate(LocalDate.now());
+    }
+
+    private void selectDate(LocalDate date) {
+        selectedDate = date;
+        selectedDayEvents.clear();
+        if (eventsByDate.containsKey(date)) {
+            selectedDayEvents.addAll(eventsByDate.get(date));
+        }
+        dayEventAdapter.notifyDataSetChanged();
+        tvDayEventsTitle.setText("Événements du " + date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
+
+    class DayViewContainer extends ViewContainer {
+
+        TextView textView;
+        LinearLayout layoutEvents;
+        CalendarDay day;
+
+        DayViewContainer(View view) {
+            super(view);
+            textView = view.findViewById(R.id.tvDay);
+            layoutEvents = view.findViewById(R.id.layoutEvents);
+
+            view.setOnClickListener(v -> {
+                if (day != null) {
+                    selectDate(day.getDate());
+                }
+            });
+        }
+
+        void bind(CalendarDay day) {
+            this.day = day;
+            textView.setText(String.valueOf(day.getDate().getDayOfMonth()));
+
+            layoutEvents.removeAllViews();
+
+            List<CalendarEvent> events = eventsByDate.get(day.getDate());
+
+            if (events != null) {
+                for (CalendarEvent event : events) {
+
+                    View bar = new View(layoutEvents.getContext());
+
+                    LinearLayout.LayoutParams params =
+                            new LinearLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    6
+                            );
+
+                    params.setMargins(0, 2, 0, 0);
+                    bar.setLayoutParams(params);
+
+                    bar.setBackgroundColor(
+                            Color.parseColor(event.proprietaireColor)
+                    );
+
+                    layoutEvents.addView(bar);
+                }
+            }
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendar, container, false);
-    }
+
 }
